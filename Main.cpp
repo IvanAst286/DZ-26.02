@@ -1,12 +1,45 @@
 #include <iostream>
-#include <utility>   
-#include <vector> 
+#include <utility> 
+#include <map>
+#include <vector>
 #include <Windows.h>
 
-// Демонстрационная функция
-std::pair<int, int> sum_and_product(int first_num, int second_num) 
+std::pair<double, double> calculate_area_and_perimeter(double radius) 
 {
-    return std::make_pair(first_num + second_num, first_num * second_num);
+    const double pi = 3.14159;
+    return std::make_pair(pi * radius * radius, 2 * pi * radius); 
+}
+
+void swap_example(int& x, int& y) 
+{
+    std::cout << "До замены: x=" << x << ", y=" << y << '\n';
+    std::swap(x, y); 
+    std::cout << "После замены: x=" << x << ", y=" << y << '\n';
+}
+
+void move_example() 
+{
+    std::vector<int> v1 = { 1, 2, 3 };
+    std::vector<int> v2 = std::move(v1); 
+    std::cout << "Размер v1 после перемещения: " << v1.size() << '\n';
+    std::cout << "Элементы v2: ";
+    for (auto i : v2) std::cout << i << ' ';
+    std::cout << '\n';
+}
+
+void map_with_pairs() 
+{
+    std::map<std::string, int> word_count = { {"apple", 1}, {"banana", 2} }; 
+    for (const auto& item : word_count) {
+        std::cout << "Слово '" << item.first << "' встречается " << item.second << " раз.\n";
+    }
+}
+
+void exchange_example() 
+{
+    int value = 10;
+    int old_val = std::exchange(value, 20);
+    std::cout << "Старая величина: " << old_val << "; Новая величина: " << value << '\n';
 }
 
 int main() 
@@ -14,31 +47,17 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    // Без функции
-    std::pair<int, double> manual_pair = { 10, 3.14 };
+    auto circle_result = calculate_area_and_perimeter(5);
+    std::cout << "Площадь круга: " << circle_result.first << ", Периметр: " << circle_result.second << '\n';
 
-    std::pair<char, char> char_pair = std::make_pair('A', 'B');
+    int a = 10, b = 20;
+    swap_example(a, b);
 
-    std::cout << "Ручная пара: Первый элемент = " << manual_pair.first << ", Второй элемент = " << manual_pair.second << '\n';
-    std::cout << "Пара с make_pair: Первый элемент = " << char_pair.first << ", Второй элемент = " << char_pair.second << '\n';
+    move_example();
 
+    map_with_pairs();
 
-    // С функцией
-    auto result_pair = sum_and_product(5, 8);
-    std::cout << "Результат функции: Сумма = " << result_pair.first << ", Произведение = " << result_pair.second << '\n';
-
-
-    //С контейнером
-    std::vector<std::pair<int, std::string>> student_scores = 
-    {
-        {1, "Игорь"},
-        {2, "Олег"}
-    };
-
-    for (const auto& student : student_scores) 
-    {
-        std::cout << "ID ученика: " << student.first << ", Имя: " << student.second << '\n';
-    }
+    exchange_example();
 
     return 0;
 }
